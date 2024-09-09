@@ -1,23 +1,30 @@
-using System;
-using System.Diagnostics;
-namespace paradigm_shift_csharp
-{
 class Checker
 {
-    static bool batteryIsOk(float temperature, float soc, float chargeRate) {
-        if(temperature < 0 || temperature > 45) {
-            Console.WriteLine("Temperature is out of range!");
-            return false;
-        } else if(soc < 20 || soc > 80) {
-            Console.WriteLine("State of Charge is out of range!");
-            return false;
-        } else if(chargeRate > 0.8) {
-            Console.WriteLine("Charge Rate is out of range!");
-            return false;
-        }
-        return true;
+    static bool batteryIsOk(float temperature, float soc, float chargeRate) 
+    {
+     bool isBatteryok = true;
+     isBatteryok = ParameterInRange(0f,45f,temperature,"Temperature") && ParameterInRange(20f,80f,soc,"State of Charge") && CheckMaxValue(0.8f,chargeRate,"Charge Rate");
+     return isBatteryok;
+    }
+ 
+    
+    static bool ParameterInRange(float min,float max,float value,string errorMessage)
+    {
+        bool isInRange = value>=min && value<=max;
+        if(!isInRange)
+            Console.WriteLine("{0} is out of range!",errorMessage);
+        return isInRange;        
+    }
+ 
+    static bool CheckMaxValue(float max, float value,string errorMessage)
+    {
+        bool isInRange = value<=max;
+        if(!isInRange)
+            Console.WriteLine("{0} is out of range!",errorMessage);
+        return isInRange;
     }
 
+ 
     static void ExpectTrue(bool expression) {
         if(!expression) {
             Console.WriteLine("Expected true, but got false");
@@ -36,6 +43,4 @@ class Checker
         Console.WriteLine("All ok");
         return 0;
     }
-    
-}
 }
